@@ -2,10 +2,8 @@
 
 Prebuilt stock MIUI Camera to include in custom ROM builds.
 
-Extracted from lisa MIUI package (refer proprietary-files.txt for version).
-
 ### Supported devices
-* Xiaomi 11 Lite NE (lisa)
+* POCO F5 / Redmi Note 12 Turbo (Marble)
 
 ### How to use?
 

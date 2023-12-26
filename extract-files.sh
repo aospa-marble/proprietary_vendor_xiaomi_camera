@@ -61,6 +61,9 @@ function blob_fixup() {
         system/lib64/libcamera_algoup_jni.xiaomi.so|system/lib64/libcamera_mianode_jni.xiaomi.so)
             patchelf --replace-needed libgui.so libgui-xiaomi.so "${2}"
             ;;
+        system/priv-app/MiuiCamera/MiuiCamera.apk)
+            split --bytes=20M -d "${2}" "${2}".part
+            ;;
     esac
 }
 
