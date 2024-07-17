@@ -63,8 +63,11 @@ function blob_fixup() {
             ;;
         system/priv-app/MiuiCamera/MiuiCamera.apk)
             tmp_dir="${EXTRACT_TMP_DIR}/MiuiCamera"
+            echo "    - Extracting apk..."
             $APKTOOL d -q "$2" -o "$tmp_dir" -f
+            echo "    - Patching apk..."
             grep -rl "com.miui.gallery" "$tmp_dir" | xargs sed -i 's|"com.miui.gallery"|"com.google.android.apps.photos"|g'
+            echo "    - Rebuilding apk..."
             $APKTOOL b -q "$tmp_dir" -o "$2"
             rm -rf "$tmp_dir"
             split --bytes=20M -d "$2" "$2".part
