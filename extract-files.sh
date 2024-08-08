@@ -66,7 +66,10 @@ function blob_fixup() {
             echo "    - Extracting apk..."
             $APKTOOL d -q "$2" -o "$tmp_dir" -f
             echo "    - Patching apk..."
+            # Use Google photos instead of MIUI gallery
             grep -rl "com.miui.gallery" "$tmp_dir" | xargs sed -i 's|"com.miui.gallery"|"com.google.android.apps.photos"|g'
+            # Use the correct launcher icon
+            sed -i "s/ic_launcher_camera_cv/ic_launcher_camera/" "$tmp_dir/AndroidManifest.xml"
             echo "    - Rebuilding apk..."
             $APKTOOL b -q "$tmp_dir" -o "$2"
             rm -rf "$tmp_dir"
