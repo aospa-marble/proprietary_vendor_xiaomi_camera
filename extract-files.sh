@@ -62,17 +62,7 @@ function blob_fixup() {
             patchelf --replace-needed libgui.so libgui-xiaomi.so "${2}"
             ;;
         system/priv-app/MiuiCamera/MiuiCamera.apk)
-            tmp_dir="${EXTRACT_TMP_DIR}/MiuiCamera"
-            echo "    - Extracting apk..."
-            $APKTOOL d -q "$2" -o "$tmp_dir" -f
-            echo "    - Patching apk..."
-            # Use Google photos instead of MIUI gallery
-            grep -rl "com.miui.gallery" "$tmp_dir" | xargs sed -i 's|"com.miui.gallery"|"com.google.android.apps.photos"|g'
-            # Use the correct launcher icon
-            sed -i "s/ic_launcher_camera_cv/ic_launcher_camera/" "$tmp_dir/AndroidManifest.xml"
-            echo "    - Rebuilding apk..."
-            $APKTOOL b -q "$tmp_dir" -o "$2"
-            rm -rf "$tmp_dir"
+            apktool_patch "${2}" "$MY_DIR/patches"
             split --bytes=20M -d "$2" "$2".part
             ;;
     esac
