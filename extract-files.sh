@@ -73,6 +73,10 @@ function blob_fixup() {
     return 0
 }
 
+function blob_fixup_dry() {
+    blob_fixup "$1" ""
+}
+
 # Initialize the helper
 setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" false "${CLEAN_VENDOR}"
 
