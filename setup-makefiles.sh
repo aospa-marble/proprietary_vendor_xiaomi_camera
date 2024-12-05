@@ -11,7 +11,7 @@ DEVICE=camera
 DEVICE_COMMON=camera
 VENDOR=xiaomi
 
-export TARGET_ENABLE_CHECKELF=false
+#export TARGET_ENABLE_CHECKELF=false
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -25,6 +25,27 @@ if [ ! -f "${HELPER}" ]; then
     exit 1
 fi
 source "${HELPER}"
+
+function lib_to_package_fixup_vendor_variants() {
+    if [ "$2" != "system" ]; then
+        return 1
+    fi
+
+    case "$1" in
+        vendor.xiaomi.hardware.campostproc@1.0)
+            echo "$1_system"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+function lib_to_package_fixup() {
+    lib_to_package_fixup_clang_rt_ubsan_standalone "$1" ||
+        lib_to_package_fixup_proto_3_9_1 "$1" ||
+        lib_to_package_fixup_vendor_variants "$@"
+}
 
 # Initialize the helper
 setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" true
