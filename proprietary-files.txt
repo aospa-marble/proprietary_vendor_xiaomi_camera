@@ -1,4 +1,4 @@
-# From marble HyperOS V816.0.4.0.UMREUXM package
+# From marble OS1.0.14.0.UMRMIXM package
 -product/priv-app/MiuiCamera/MiuiCamera.apk:system/priv-app/MiuiCamera/MiuiCamera.apk;OVERRIDES=Camera,Camera2,GoogleCameraGo
 system/lib64/libgui.so:system/lib64/libgui-xiaomi.so
 system_ext/lib64/libcamera_algoup_jni.xiaomi.so:system/lib64/libcamera_algoup_jni.xiaomi.so
