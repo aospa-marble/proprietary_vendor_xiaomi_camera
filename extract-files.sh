@@ -1,8 +1,7 @@
 #!/bin/bash
 #
-# Copyright (C) 2016 The CyanogenMod Project
-# Copyright (C) 2017-2020 The LineageOS Project
-#
+# SPDX-FileCopyrightText: 2016 The CyanogenMod Project
+# SPDX-FileCopyrightText: 2017-2024 The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -32,19 +31,20 @@ SECTION=
 
 while [ "${#}" -gt 0 ]; do
     case "${1}" in
-        -n | --no-cleanup )
-                CLEAN_VENDOR=false
-                ;;
-        -k | --kang )
-                KANG="--kang"
-                ;;
-        -s | --section )
-                SECTION="${2}"; shift
-                CLEAN_VENDOR=false
-                ;;
-        * )
-                SRC="${1}"
-                ;;
+        -n | --no-cleanup)
+            CLEAN_VENDOR=false
+            ;;
+        -k | --kang)
+            KANG="--kang"
+            ;;
+        -s | --section)
+            SECTION="${2}"
+            shift
+            CLEAN_VENDOR=false
+            ;;
+        *)
+            SRC="${1}"
+            ;;
     esac
     shift
 done
@@ -53,19 +53,28 @@ if [ -z "${SRC}" ]; then
     SRC="adb"
 fi
 
+
 function blob_fixup() {
     case "${1}" in
         system/lib64/libgui-xiaomi.so)
-            patchelf --set-soname libgui-xiaomi.so "${2}"
+            [ "$2" = "" ] && return 0
+            "${PATCHELF}" --set-soname libgui-xiaomi.so "${2}"
             ;;
-        system/lib64/libcamera_algoup_jni.xiaomi.so|system/lib64/libcamera_mianode_jni.xiaomi.so)
-            patchelf --replace-needed libgui.so libgui-xiaomi.so "${2}"
+        system/lib64/libcamera_algoup_jni.xiaomi.so | system/lib64/libcamera_mianode_jni.xiaomi.so)
+            [ "$2" = "" ] && return 0
+            "${PATCHELF}" --replace-needed libgui.so libgui-xiaomi.so "${2}"
             ;;
         system/priv-app/MiuiCamera/MiuiCamera.apk)
+            [ "$2" = "" ] && return 0
             apktool_patch "${2}" "$MY_DIR/patches"
             split --bytes=20M -d "$2" "$2".part
             ;;
+        *)
+            return 1
+            ;;
     esac
+
+    return 0
 }
 
 # Initialize the helper

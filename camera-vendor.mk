@@ -14,3 +14,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     MiuiCamera
+
+PRODUCT_PACKAGES += \
+    libcamera_algoup_jni.xiaomi_libcamera_algoup_jni.xiaomi_symlink64 \
+    libcamera_mianode_jni.xiaomi_libcamera_mianode_jni.xiaomi_symlink64
